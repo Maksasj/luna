@@ -2,6 +2,9 @@ dist
 .vscode
 .vs
 
+#### Windows ####
+build
+
 #### Android ####
 
 #built application files

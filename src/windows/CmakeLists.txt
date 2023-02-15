@@ -5,5 +5,5 @@ project(SDL2Test)
 find_package(SDL2 REQUIRED)
 include_directories(${SDL2_INCLUDE_DIRS})
 
-add_executable(main main.cpp)
-target_link_libraries(main ${SDL2_LIBRARIES})
+add_executable(luna main.cpp)
+target_link_libraries(luna ${SDL2_LIBRARIES})

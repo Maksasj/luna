@@ -16,11 +16,13 @@ namespace luna {
             Canvas() {
                 _width = 0;
                 _height = 0;
+                _data = NULL;
             }
 
             Canvas(u32 width, u32 height) {
                 _width = width;
                 _height = height;
+                _data = NULL;
             }
 
             ~Canvas() {

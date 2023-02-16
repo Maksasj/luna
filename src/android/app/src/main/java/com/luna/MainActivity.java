@@ -8,6 +8,7 @@ import android.graphics.Canvas;
 import android.os.Bundle;
 import android.os.Debug;
 import android.os.SystemClock;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -21,50 +22,62 @@ import java.util.logging.Logger;
 
 public class MainActivity extends AppCompatActivity {
     private SkiaDrawView fMainView;
+    private int height;
+    private int width;
 
-    // Used to load the 'luna' library on application startup.
     static {
         System.loadLibrary("luna");
     }
-
-    private ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //binding = ActivityMainBinding.inflate(getLayoutInflater());
-        //setContentView(binding.getRoot());
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        height = displayMetrics.heightPixels;
+        width = displayMetrics.widthPixels;
+
+        lunaInit(width, height);
 
         fMainView = new SkiaDrawView(this);
         setContentView(fMainView);
 
-        Timer fAnimationTimer = new Timer();
-        fAnimationTimer.schedule(new TimerTask() {
-            public void run()
-            {
-                // This will request an update of the SkiaDrawView, even from other threads
-                fMainView.postInvalidate();
+        new Thread(() -> {
+            while(true) {
+                fMainView.invalidate();
+
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+
             }
-        }, 0, 5); // 0 means no delay before the timer starts; 5 means repeat every 5 milliseconds
+        }).start();
     }
 
     private class SkiaDrawView extends View {
         Bitmap fSkiaBitmap;
         public SkiaDrawView(Context ctx) {
             super(ctx);
-            fSkiaBitmap = Bitmap.createBitmap(800, 600, Bitmap.Config.ARGB_8888);
+            fSkiaBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         }
 
         @Override
         protected void onDraw(Canvas canvas) {
-            // Call into our C++ code that renders to the bitmap using Skia
+            long startTime = System.nanoTime();
+
             drawFromC(fSkiaBitmap);
-            Log.d("TEST", "Drawing on canvas");
-            // Present the bitmap on the screen
+
+            long endTime = System.nanoTime();
+            long duration = (endTime - startTime);  //divide by 1000000 to get milliseconds.
+            Log.i("INFO", String.valueOf((duration / 1000000.0)));
+
             canvas.drawBitmap(fSkiaBitmap, 0, 0, null);
         }
     }
 
     private native void drawFromC(Bitmap image);
+    private native void lunaInit(int width, int height);
 }

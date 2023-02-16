@@ -2,42 +2,24 @@
 #include <stdlib.h>
 #include <android/bitmap.h>
 
-void draw_color(u_int32_t *pixel, u_int32_t color) {
-    uint32_t alpha = (color & 0xFF000000) >> 24;
-    uint32_t blue = (color & 0x00FF0000) >> 16;
-    u_short green = (color & 0x0000FF00) >> 8;
-    u_char red = color & 0x00000FF;
-    *pixel = (alpha << 24) | (red << 16) | (green << 8) | blue;
-}
+#include "shared/luna.hpp"
 
-void draw(jint stride, void *pixels, u_short x, u_short y, u_int32_t color) {
-    pixels = (char *) pixels + y * stride;
-    u_int32_t *pixel = ((u_int32_t *) pixels) + x;
-    draw_color(pixel, color);
-}
+luna::Program program(800, 600);
 
-extern "C" JNIEXPORT void JNICALL
-Java_com_luna_MainActivity_drawFromC(JNIEnv *env, jobject instance, jobject bmp) {
-
-    u_int32_t x = 50;
-    u_int32_t y = 50;
-    u_int32_t color = 0xFFFFFFFF;
+extern "C" JNIEXPORT void JNICALL Java_com_luna_MainActivity_drawFromC(JNIEnv *env, jobject instance, jobject bmp) {
     AndroidBitmapInfo info;
     void *pixels;
 
-    if (AndroidBitmap_getInfo(env, bmp, &info) < 0) {
-        return;
-    }
+    if (AndroidBitmap_getInfo(env, bmp, &info) < 0) return;
+    if (info.format != ANDROID_BITMAP_FORMAT_RGBA_8888) return;
+    if (AndroidBitmap_lockPixels(env, bmp, &pixels) < 0) return;
 
-    if (info.format != ANDROID_BITMAP_FORMAT_RGBA_8888) {
-        return;
-    }
-
-    if (AndroidBitmap_lockPixels(env, bmp, &pixels) < 0) {
-        return;
-    }
-
-    draw(info.stride, pixels, x, y, color);
+    program.Update();
+    program.Render((u32*) pixels);
 
     AndroidBitmap_unlockPixels(env, bmp);
+}
+
+extern "C" JNIEXPORT void JNICALL Java_com_luna_MainActivity_lunaInit(JNIEnv *env, jobject instance, int width , int height) {
+    program = luna::Program(width, height);
 }

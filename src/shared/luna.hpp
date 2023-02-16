@@ -5,7 +5,6 @@
 #include "renderer.h"
 #include "timer.h"
 
-//#define _ENABLE_LUNA_LOGGER_
 #include "logger.h"
 
 namespace luna {
@@ -47,9 +46,9 @@ namespace luna {
                 memcpy(target, _mainCanvas.getData(), _screen_width*_screen_height*sizeof(u32));
 
                 auto end = std::chrono::high_resolution_clock::now();                                                                
-                double duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count(); 
+                double duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin).count(); 
                 
-                LUNA_LOG("[INFO][PROGRAM] Last render frame took: " + std::to_string(duration) + "ms \n");
+                LUNA_LOG("[INFO][PROGRAM] Last render frame took: " + std::to_string(duration / 1000000.0) + "ms \n");
             }
 
             void Update() {

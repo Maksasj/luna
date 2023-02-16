@@ -10,9 +10,7 @@ namespace luna {
             u32 canvasWidth = canvas->getWidth();
             u32 canvasHeight = canvas->getHeight();
 
-            for(int i = 0; i < canvasWidth*canvasHeight; ++i) {
-                canvasData[i] = color;
-            }
+            memset(canvasData, color, canvasWidth*canvasHeight*sizeof(u32));
         }
 
         static void fillRect(Canvas *canvas, u32 x0, u32 y0, u32 width, u32 height, u32 color) {

@@ -1,8 +1,10 @@
 #include "SDL.h"
+
+#define _ENABLE_LUNA_LOGGER_
 #include "luna.hpp"
 
-const u32 SCREEN_WIDTH = 800;
-const u32 SCREEN_HEIGHT = 600;
+const u32 SCREEN_WIDTH = 1600;
+const u32 SCREEN_HEIGHT = 800;
 
 int main(int argc, char *argv[]) {
     SDL_Init(SDL_INIT_VIDEO);
@@ -35,7 +37,7 @@ int main(int argc, char *argv[]) {
         int pitch;
         SDL_LockTexture(texture, &window_rect, &pixels_dst, &pitch);
 
-        program.Update();
+        //program.Update();
         program.Render((u32*) pixels_dst);
 
         SDL_UnlockTexture(texture);

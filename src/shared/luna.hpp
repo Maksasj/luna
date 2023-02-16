@@ -33,13 +33,14 @@ namespace luna {
                 Renderer::fillCanvas(&_mainCanvas, 0xFF000000);
                 
                 Renderer::fillRect(&_mainCanvas, (_screen_width - 250) / 2, (_screen_height - 250) / 2, 250, 250, 0xFFFF0000);
-
+                
                 {
                     static u64 tick = 0;
                     tick += 1;
                     f32 rect2OffsetX = 90.0*sin(tick / 100.0);
-                    f32 rect2OffsetY = 90.0*cos(tick / 100.0); //ARGB
+                    f32 rect2OffsetY = 90.0*cos(tick / 100.0);
 
+                    //ARGB
                     Renderer::fillRect(&_mainCanvas, 250 + (i32) rect2OffsetX, 250 + (i32) rect2OffsetY, 80, 80, 0xFF0000FF);
                 }
 

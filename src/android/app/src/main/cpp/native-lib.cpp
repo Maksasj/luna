@@ -14,7 +14,7 @@ extern "C" JNIEXPORT void JNICALL Java_com_luna_MainActivity_drawFromC(JNIEnv *e
     if (info.format != ANDROID_BITMAP_FORMAT_RGBA_8888) return;
     if (AndroidBitmap_lockPixels(env, bmp, &pixels) < 0) return;
 
-    program.Update();
+    //program.Update();
     program.Render((u32*) pixels);
 
     AndroidBitmap_unlockPixels(env, bmp);

@@ -3,8 +3,8 @@
 #define _ENABLE_LUNA_LOGGER_
 #include "luna.hpp"
 
-const u32 SCREEN_WIDTH = 1600;
-const u32 SCREEN_HEIGHT = 800;
+const u32 SCREEN_WIDTH = 800;
+const u32 SCREEN_HEIGHT = 600;
 
 int main(int argc, char *argv[]) {
     SDL_Init(SDL_INIT_VIDEO);

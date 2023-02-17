@@ -33,3 +33,21 @@ extern "C" JNIEXPORT void JNICALL Java_com_luna_MainActivity_drawFromC(JNIEnv *e
 extern "C" JNIEXPORT void JNICALL Java_com_luna_MainActivity_lunaInit(JNIEnv *env, jobject instance, int width , int height) {
     program = luna::Program(width, height);
 }
+
+extern "C" JNIEXPORT void JNICALL Java_com_luna_MainActivity_lunaPushTouchEvent(JNIEnv *env, jobject instance, int x0 , int y0) {
+    luna::Event event;
+    event.touchEvent = luna::TouchEvent{ luna::EventType::TOUCH_EVENT, x0, y0 };
+    luna::EventManager::pushEvent(event);
+}
+
+extern "C" JNIEXPORT void JNICALL Java_com_luna_MainActivity_lunaPushTouchReleaseEvent(JNIEnv *env, jobject instance, int x0 , int y0) {
+    luna::Event event;
+    event.touchReleaseEvent = luna::TouchRreleaseEvent{ luna::EventType::TOUCH_RELEASE_EVENT, x0, y0 };
+    luna::EventManager::pushEvent(event);
+}
+
+extern "C" JNIEXPORT void JNICALL Java_com_luna_MainActivity_lunaPushTouchMotionEvent(JNIEnv *env, jobject instance, int x0 , int y0) {
+    luna::Event event;
+    event.touchMotionEvent = luna::TouchMotionEvent{ luna::EventType::TOUCH_MOTION_EVENT, x0, y0 };
+    luna::EventManager::pushEvent(event);
+}

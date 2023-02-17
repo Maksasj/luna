@@ -10,6 +10,7 @@ import android.os.Debug;
 import android.os.SystemClock;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
@@ -72,12 +73,39 @@ public class MainActivity extends AppCompatActivity {
 
             long endTime = System.nanoTime();
             long duration = (endTime - startTime);  //divide by 1000000 to get milliseconds.
-            Log.i("INFO", String.valueOf((duration / 1000000.0)));
+            //Log.i("INFO", String.valueOf((duration / 1000000.0)));
 
             canvas.drawBitmap(fSkiaBitmap, 0, 0, null);
+        }
+
+        @Override
+        public boolean onTouchEvent(MotionEvent e) {
+
+            float x = e.getX();
+            float y = e.getY();
+
+            switch (e.getAction()) {
+                case MotionEvent.ACTION_MOVE: {
+                    lunaPushTouchMotionEvent((int)x, (int)y);
+                    break;
+                }
+                case MotionEvent.ACTION_DOWN: {
+                    lunaPushTouchEvent((int)x, (int)y);
+                    break;
+                }
+                case MotionEvent.ACTION_UP: {
+                    lunaPushTouchReleaseEvent((int)x, (int)y);
+                    break;
+                }
+            }
+
+            return true;
         }
     }
 
     private native void drawFromC(Bitmap image);
     private native void lunaInit(int width, int height);
+    private native void lunaPushTouchEvent(int x0, int y0);
+    private native void lunaPushTouchReleaseEvent(int x0, int y0);
+    private native void lunaPushTouchMotionEvent(int x0, int y0);
 }

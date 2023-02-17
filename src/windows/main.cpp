@@ -21,13 +21,31 @@ int main(int argc, char *argv[]) {
     luna::Program program(SCREEN_WIDTH, SCREEN_HEIGHT);
 
     while (true) {
-        SDL_Event event;
-        while (SDL_PollEvent(&event)) {
-            switch (event.type) {
-            case SDL_QUIT: {
-                return 1;
-            } break;
+        SDL_Event ev;
 
+        while (SDL_PollEvent(&ev)) {
+            switch (ev.type) {
+                case SDL_QUIT: {
+                    return 1;
+                }
+                case SDL_MOUSEBUTTONDOWN: {   
+                    luna::Event event;
+                    event.touchEvent = luna::TouchEvent{ luna::EventType::TOUCH_EVENT, ev.button.x, ev.button.y };
+                    luna::EventManager::pushEvent(event);
+                    break;
+                }
+                case SDL_MOUSEBUTTONUP: {   
+                    luna::Event event;
+                    event.touchReleaseEvent = luna::TouchRreleaseEvent{ luna::EventType::TOUCH_RELEASE_EVENT, ev.button.x, ev.button.y };
+                    luna::EventManager::pushEvent(event);
+                    break;
+                }
+                case SDL_MOUSEMOTION: {
+                    luna::Event event;
+                    event.touchMotionEvent = luna::TouchMotionEvent{ luna::EventType::TOUCH_MOTION_EVENT, ev.button.x, ev.button.y };
+                    luna::EventManager::pushEvent(event);
+                    break;
+                }
             }
         }
 

@@ -1,6 +1,7 @@
 #include <jni.h>
 #include <stdlib.h>
 #include <android/bitmap.h>
+#include <thread>
 
 #include "shared/luna.hpp"
 
@@ -14,8 +15,17 @@ extern "C" JNIEXPORT void JNICALL Java_com_luna_MainActivity_drawFromC(JNIEnv *e
     if (info.format != ANDROID_BITMAP_FORMAT_RGBA_8888) return;
     if (AndroidBitmap_lockPixels(env, bmp, &pixels) < 0) return;
 
-    //program.Update();
+    auto begin = std::chrono::high_resolution_clock::now();                                                                                                                                     
+
+    program.Update();
     program.Render((u32*) pixels);
+
+    auto end = std::chrono::high_resolution_clock::now();                                                                
+    double durationMs = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin).count() / 1000000.0; 
+
+    if(durationMs < 16.0) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(16 - (u32)durationMs));
+    }
 
     AndroidBitmap_unlockPixels(env, bmp);
 }

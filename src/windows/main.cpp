@@ -1,3 +1,5 @@
+#include <thread>
+
 #include "SDL.h"
 
 #define _ENABLE_LUNA_LOGGER_
@@ -37,8 +39,23 @@ int main(int argc, char *argv[]) {
         int pitch;
         SDL_LockTexture(texture, &window_rect, &pixels_dst, &pitch);
 
-        //program.Update();
-        program.Render((u32*) pixels_dst);
+        auto begin = std::chrono::high_resolution_clock::now();                                                                                                                                     
+        
+        {
+            program.Update();
+            program.Render((u32*) pixels_dst);
+
+            auto end = std::chrono::high_resolution_clock::now();                                                                
+            double durationMs = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin).count() / 1000000.0; 
+
+            if(durationMs < 16.0) {
+                std::this_thread::sleep_for(std::chrono::milliseconds(16 - (u32)durationMs));
+            }
+        }
+
+        auto end = std::chrono::high_resolution_clock::now();
+        double loopDurationMs = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin).count(); 
+        luna::LUNA_LOG("[INFO][SDL] Last render took: " + std::to_string(loopDurationMs / 1000000.0) + "ms \n");
 
         SDL_UnlockTexture(texture);
 

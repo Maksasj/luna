@@ -13,41 +13,21 @@ namespace luna {
             u32 _height;
 
         public:
-            Canvas() {
-                _width = 0;
-                _height = 0;
-                _data = NULL;
-            }
+            Canvas();
 
-            Canvas(u32 width, u32 height) {
-                _width = width;
-                _height = height;
-                _data = NULL;
-            }
+            Canvas(u32 width, u32 height);
 
-            ~Canvas() {
-                delete _data;
-            }
+            ~Canvas();
 
-            void initData() {
-                _data = new u32[_width*_height]();
-            }
+            void initData();
 
-            void setData(u32 *data) {
-                _data = data;
-            } 
+            void setData(u32 *data);
 
-            u32 getWidth() {
-                return _width;
-            }
+            u32 getWidth();
 
-            u32* getData() {
-                return _data;
-            }
+            u32* getData();
 
-            u32 getHeight() {
-                return _height;
-            }
+            u32 getHeight();
     };
     
 }

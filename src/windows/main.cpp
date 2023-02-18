@@ -3,7 +3,7 @@
 #include "SDL.h"
 
 #define _ENABLE_LUNA_LOGGER_
-#include "luna.hpp"
+#include "luna.h"
 
 const u32 SCREEN_WIDTH = 800;
 const u32 SCREEN_HEIGHT = 600;

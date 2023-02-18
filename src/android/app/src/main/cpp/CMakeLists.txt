@@ -4,7 +4,13 @@ project("luna")
 
 include_directories("../../../../../../src")
 
-add_library(luna SHARED native-lib.cpp)
+file(GLOB LUNA_SOURCE
+     "*.h"
+     "*.cpp"
+     "../../../../../../src/shared/*.cpp"
+)
+
+add_library(luna SHARED ${LUNA_SOURCE})
 
 find_library(log-lib log)
 find_library(jnigraphics-lib jnigraphics)

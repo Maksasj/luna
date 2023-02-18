@@ -7,5 +7,11 @@ include_directories("../shared")
 find_package(SDL2 REQUIRED)
 include_directories(${SDL2_INCLUDE_DIRS})
 
-add_executable(luna main.cpp)
+file(GLOB LUNA_SOURCE
+     "*.h"
+     "*.cpp"
+     "../shared/*.cpp"
+)
+
+add_executable(luna ${LUNA_SOURCE})
 target_link_libraries(luna ${SDL2_LIBRARIES})

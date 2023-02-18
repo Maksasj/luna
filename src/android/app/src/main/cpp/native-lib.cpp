@@ -3,7 +3,7 @@
 #include <android/bitmap.h>
 #include <thread>
 
-#include "shared/luna.h"
+#include "luna.h"
 
 luna::Program program(800, 600);
 

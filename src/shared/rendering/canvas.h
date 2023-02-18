@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-#include "types.h"
+#include "utils\types.h"
 
 namespace luna {
     class Canvas {

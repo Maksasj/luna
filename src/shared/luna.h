@@ -1,12 +1,11 @@
 #include <string>
 #include <cstring>
 
-#include "canvas.h"
-#include "renderer.h"
+#include "rendering\renderer.h"
 
-#include "event_manager.h"
+#include "events\event_manager.h"
 
-#include "logger.h"
+#include "utils\logger.h"
 
 namespace luna {
     class Program {

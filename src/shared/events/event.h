@@ -1,8 +1,8 @@
 #include <vector>
 
-#include "types.h"
+#include "utils\types.h"
 
-#include "logger.h"
+#include "utils\logger.h"
 
 namespace luna {
     enum EventType {

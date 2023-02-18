@@ -2,7 +2,7 @@
 
 #include "event.h"
 
-#include "logger.h"
+#include "utils\logger.h"
 
 namespace luna {
     class EventManager {

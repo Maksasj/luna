@@ -26,17 +26,13 @@ WebAssembly.instantiateStreaming(fetch('./wasm.wasm'), {
     console.log(w.instance.exports);
 
     const buffer = w.instance.exports.memory.buffer;
+    
+    console.log(w.instance.exports._Z6renderv());
+    
     const pixels = w.instance.exports.pixels;
-    
-    w.instance.exports._Z6renderv();
-    
-    console.log(pixels);
-
     const image = new ImageData(new Uint8ClampedArray(buffer, pixels, app.width*app.height*4), app.width);
-    
-    console.log(image);
 
-    
+    console.log(image);
     ctx.putImageData(image, 0, 0);
 })
 

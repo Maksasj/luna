@@ -1,17 +1,14 @@
 #include "luna.h"
 
+
 u32 pixels[800*600];
 
-void render() {
+int render() {
     luna::Program program(800, 600);
-  
+
     program.Render(pixels);
 
-    //for(int i = 0; i < 480; ++i) {
-    //   pixels[i] = program._mainCanvas._data[i];
-    //}
-}
+    //memset(pixels, 0xFFBBBBBB, 800*600*sizeof(u32));
 
-int pog() {
-    return 0;
+    return 69;
 }

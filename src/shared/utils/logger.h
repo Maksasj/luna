@@ -1,6 +1,8 @@
 #ifndef _LUNA_LOGGER_H_
 #define _LUNA_LOGGER_H_
 
+#define _ENABLE_LUNA_LOGGER_
+
 #include <iostream>
 #include <fstream>
 #include <chrono>

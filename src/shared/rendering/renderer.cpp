@@ -54,3 +54,27 @@ void luna::Renderer::lineRect(Canvas *canvas, i32 x0, i32 y0, u32 width, u32 hei
             canvasData[y1 * canvasWidth + x] = color;
     }
 } 
+
+void luna::Renderer::fillCircle(Canvas *canvas, i32 x0, i32 y0, u32 radius, u32 color) {
+    u32* canvasData = canvas->getData();
+    u32 canvasWidth = canvas->getWidth();
+    u32 canvasHeight = canvas->getHeight();
+
+    i32 x1 = x0 + radius*2;
+    i32 y1 = y0 + radius*2;
+
+    luna::Rectangle::normalize(&x0, &y0, &x1, &y1, canvasWidth, canvasHeight);
+
+    i32 xc = x0 + (radius / 2);
+    i32 yc = y0 + (radius / 2);
+
+    for(i32 y = 0; y < y1; ++y) {
+        for(i32 x = 0; x < x1; ++x) {
+            i32 dx = xc - x;
+            i32 dy = yc - y;
+            
+            if(dx*dx + dy*dy < radius*radius)
+                canvasData[y * canvasWidth + x] = color;
+        }
+    }
+}

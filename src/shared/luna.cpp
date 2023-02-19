@@ -15,7 +15,8 @@ void luna::Program::Render(u32* target) {
     
     Renderer::fillCanvas(&_mainCanvas, 0xFF000000);
 
-    Renderer::fillRect(&_mainCanvas, (_screen_width - 250) / 2, (_screen_height - 250) / 2, 250, 250, 0xFFFF0000);
+    Renderer::fillRect(&_mainCanvas, (_screen_width - 300) / 2, (_screen_height - 250) / 2, 250, 250, 0xFFFF0000);
+
     
     static u64 tick = 0;
     tick += 1;
@@ -24,6 +25,8 @@ void luna::Program::Render(u32* target) {
     
     posX = 300.0*sin(tick / 100.0);
     posY = 300.0*cos(tick / 100.0);
+
+    Renderer::fillCircle(&_mainCanvas, 360 + 50.0*sin(tick / 10.0), 350 - 50.0*cos(tick / 10.0), 75, 0xFFFF00FF);
     
     Renderer::fillRect(&_mainCanvas, 360 + 50.0*sin(tick / 10.0), 260 + 50.0*cos(tick / 10.0), 80, 80, 0xFF00FF00);
     Renderer::fillRect(&_mainCanvas, 400, 400 - 40 - posX, 80, 80, 0xFF00FFFF);
@@ -52,6 +55,9 @@ void luna::Program::Update() {
     Event event;
     while(!EventManager::pullEvent(&event)) {
         switch (event.eventType) {
+            case LUNA_QUIT_EVENT: {
+                break;
+            }
             case LUNA_TOUCH_EVENT: {
                 LUNA_LOG("[INFO][PROGRAM][EVENT_MANAGER] Executing TOUCH_EVENT event\n");
                 isHolding = true;

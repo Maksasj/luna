@@ -29,19 +29,19 @@ int main(int argc, char *argv[]) {
                 }
                 case SDL_MOUSEBUTTONDOWN: {   
                     luna::Event event;
-                    event.touchEvent = luna::TouchEvent{ luna::EventType::TOUCH_EVENT, ev.button.x, ev.button.y };
+                    event.touchEvent = luna::TouchEvent{ luna::EventType::LUNA_TOUCH_EVENT, ev.button.x, ev.button.y };
                     luna::EventManager::pushEvent(event);
                     break;
                 }
                 case SDL_MOUSEBUTTONUP: {   
                     luna::Event event;
-                    event.touchReleaseEvent = luna::TouchRreleaseEvent{ luna::EventType::TOUCH_RELEASE_EVENT, ev.button.x, ev.button.y };
+                    event.touchReleaseEvent = luna::TouchRreleaseEvent{ luna::EventType::LUNA_TOUCH_RELEASE_EVENT, ev.button.x, ev.button.y };
                     luna::EventManager::pushEvent(event);
                     break;
                 }
                 case SDL_MOUSEMOTION: {
                     luna::Event event;
-                    event.touchMotionEvent = luna::TouchMotionEvent{ luna::EventType::TOUCH_MOTION_EVENT, ev.button.x, ev.button.y };
+                    event.touchMotionEvent = luna::TouchMotionEvent{ luna::EventType::LUNA_TOUCH_MOTION_EVENT, ev.button.x, ev.button.y };
                     luna::EventManager::pushEvent(event);
                     break;
                 }

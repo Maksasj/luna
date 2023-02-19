@@ -52,19 +52,19 @@ void luna::Program::Update() {
     Event event;
     while(!EventManager::pullEvent(&event)) {
         switch (event.eventType) {
-            case TOUCH_EVENT: {
+            case LUNA_TOUCH_EVENT: {
                 LUNA_LOG("[INFO][PROGRAM][EVENT_MANAGER] Executing TOUCH_EVENT event\n");
                 isHolding = true;
                 touchPosX = event.touchEvent.x0;
                 touchPosY = event.touchEvent.y0;
                 break;
             }
-            case TOUCH_RELEASE_EVENT: {
+            case LUNA_TOUCH_RELEASE_EVENT: {
                 LUNA_LOG("[INFO][PROGRAM][EVENT_MANAGER] Executing TOUCH_RELEASE_EVENT event\n");
                 isHolding = false;
                 break;
             }
-            case TOUCH_MOTION_EVENT: {
+            case LUNA_TOUCH_MOTION_EVENT: {
                 LUNA_LOG("[INFO][PROGRAM][EVENT_MANAGER] Executing TOUCH_MOTION_EVENT event\n");
                 touchPosX = event.touchReleaseEvent.x0;
                 touchPosY = event.touchReleaseEvent.y0;

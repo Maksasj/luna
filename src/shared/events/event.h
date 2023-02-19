@@ -6,9 +6,11 @@
 
 namespace luna {
     enum EventType {
-        TOUCH_EVENT,
-        TOUCH_RELEASE_EVENT,
-        TOUCH_MOTION_EVENT
+        LUNA_TOUCH_EVENT,
+        LUNA_TOUCH_RELEASE_EVENT,
+        LUNA_TOUCH_MOTION_EVENT,
+
+        LUNA_QUIT_EVENT,
     };
 
     struct TouchEvent
@@ -32,6 +34,11 @@ namespace luna {
         i32 y0;
     };
     
+    struct QuitEvent
+    {
+        EventType eventType;
+    };
+
     union Event {
         EventType eventType;
         TouchEvent touchEvent;

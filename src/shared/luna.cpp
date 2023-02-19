@@ -21,10 +21,10 @@ void luna::Program::Render(u32* target) {
     static u64 tick = 0;
     tick += 1;
     static i32 posX = 0;
-    static i32 posY = 0;
+    //static i32 posY = 0;
     
     posX = 300.0*sin(tick / 100.0);
-    posY = 300.0*cos(tick / 100.0);
+    //posY = 300.0*cos(tick / 100.0);
 
     Renderer::fillCircle(&_mainCanvas, 360 + 50.0*sin(tick / 10.0), 350 - 50.0*cos(tick / 10.0), 75, 0xFFFF00FF);
     

@@ -14,11 +14,11 @@ namespace luna {
             if((*x1) < 0) (*x1) = 0;
             if((*y1) < 0) (*y1) = 0;
 
-            if((*x0) >= maxWidth)   (*x0) = maxWidth - 1;
-            if((*y0) >= maxHeight)  (*y0) = maxHeight - 1;
+            if((*x0) >= (i32) maxWidth)   (*x0) = maxWidth - 1;
+            if((*y0) >= (i32) maxHeight)  (*y0) = maxHeight - 1;
 
-            if((*x1) >= maxWidth)   (*x1) = maxWidth - 1;
-            if((*y1) >= maxHeight)  (*y1) = maxHeight - 1;
+            if((*x1) >= (i32) maxWidth)   (*x1) = maxWidth - 1;
+            if((*y1) >= (i32) maxHeight)  (*y1) = maxHeight - 1;
         }
     };
 }

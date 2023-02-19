@@ -42,7 +42,7 @@ void luna::Renderer::lineRect(Canvas *canvas, i32 x0, i32 y0, u32 width, u32 hei
         if(x0 == x2)
             canvasData[y * canvasWidth + x0] = color;
 
-        if(x1 == x2 + width)
+        if(x1 == x2 + (i32) width)
             canvasData[y * canvasWidth + x1] = color;
     }
 
@@ -50,7 +50,7 @@ void luna::Renderer::lineRect(Canvas *canvas, i32 x0, i32 y0, u32 width, u32 hei
         if(y0 == y2)
             canvasData[y0 * canvasWidth + x] = color;
 
-        if(y1 == y2 + height)
+        if(y1 == y2 + (i32) height)
             canvasData[y1 * canvasWidth + x] = color;
     }
 } 
@@ -73,7 +73,7 @@ void luna::Renderer::fillCircle(Canvas *canvas, i32 x0, i32 y0, u32 radius, u32 
             i32 dx = xc - x;
             i32 dy = yc - y;
             
-            if(dx*dx + dy*dy < radius*radius)
+            if(dx*dx + dy*dy < (i32)(radius*radius))
                 canvasData[y * canvasWidth + x] = color;
         }
     }

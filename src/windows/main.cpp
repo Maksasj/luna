@@ -17,7 +17,8 @@ int main(int argc, char *argv[]) {
 
     SDL_Texture* texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ABGR8888, SDL_TEXTUREACCESS_STREAMING, SCREEN_WIDTH, SCREEN_HEIGHT);
 
-    luna::Program program(SCREEN_WIDTH, SCREEN_HEIGHT);
+    luna::Program *program;
+    program = new luna::Program(SCREEN_WIDTH, SCREEN_HEIGHT);
 
     while (true) {
         SDL_Event ev;
@@ -25,7 +26,7 @@ int main(int argc, char *argv[]) {
         while (SDL_PollEvent(&ev)) {
             switch (ev.type) {
                 case SDL_QUIT: {
-                    return 1;
+                    return 0;
                 }
                 case SDL_MOUSEBUTTONDOWN: {   
                     luna::Event event;
@@ -59,8 +60,8 @@ int main(int argc, char *argv[]) {
         auto begin = std::chrono::high_resolution_clock::now();                                                                                                                                     
         
         {
-            program.Update();
-            program.Render((u32*) pixels_dst);
+            program->Update();
+            program->Render((u32*) pixels_dst);
 
             auto end = std::chrono::high_resolution_clock::now();                                                                
             double durationMs = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin).count() / 1000000.0; 
@@ -72,7 +73,7 @@ int main(int argc, char *argv[]) {
 
         auto end = std::chrono::high_resolution_clock::now();
         double loopDurationMs = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin).count(); 
-        luna::LUNA_LOG("[INFO][SDL] Last render took: " + std::to_string(loopDurationMs / 1000000.0) + "ms \n");
+        LUNA_LOG("[INFO][SDL] Last render took: " + std::to_string(loopDurationMs / 1000000.0) + "ms \n");
 
         SDL_UnlockTexture(texture);
 
@@ -80,6 +81,8 @@ int main(int argc, char *argv[]) {
 
         SDL_RenderPresent(renderer);
     }
+
+    delete program;
 
     SDL_DestroyWindow(window);
     SDL_Quit();

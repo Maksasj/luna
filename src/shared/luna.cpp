@@ -1,8 +1,23 @@
 #include "luna.h"
 
+luna::Program::Program() {
+    _mainCanvas = Canvas(800, 600);
+    editor = Editor(400, 400);
+
+    _screen_width = 800;
+    _screen_height = 600;
+
+    LUNA_LOG("[INFO][PROGRAM] Initialized program\n");
+}
+
 luna::Program::Program(u32 width, u32 height) {
     _mainCanvas = Canvas(width, height);
     _mainCanvas.initData();
+
+    editor = Editor(400, 400);
+    editor.canvas.initData();
+
+    Renderer::fillCanvas(&editor.canvas, 0xFFFFAAAA);
 
     _screen_width = width;
     _screen_height = height;
@@ -13,29 +28,12 @@ luna::Program::Program(u32 width, u32 height) {
 void luna::Program::Render(u32* target) {
     auto begin = std::chrono::high_resolution_clock::now();                                                                                                                                     
     
-    Renderer::fillCanvas(&_mainCanvas, 0xFF000000);
-
-    Renderer::fillRect(&_mainCanvas, (_screen_width - 300) / 2, (_screen_height - 250) / 2, 250, 250, 0xFFFF0000);
-
+    Renderer::fillCanvas(&_mainCanvas, 0xFF222222);
     
-    static u64 tick = 0;
-    tick += 1;
-    static i32 posX = 0;
-    //static i32 posY = 0;
-    
-    posX = 300.0*sin(tick / 100.0);
-    //posY = 300.0*cos(tick / 100.0);
+    Renderer::drawCanvas(&_mainCanvas, &editor.canvas, ((_screen_width) / 2)  - 200, ((_screen_height) / 2) - 200);
 
-    Renderer::fillCircle(&_mainCanvas, 360 + 50.0*sin(tick / 10.0), 350 - 50.0*cos(tick / 10.0), 75, 0xFFFF00FF);
-    
-    Renderer::fillRect(&_mainCanvas, 360 + 50.0*sin(tick / 10.0), 260 + 50.0*cos(tick / 10.0), 80, 80, 0xFF00FF00);
-    Renderer::fillRect(&_mainCanvas, 400, 400 - 40 - posX, 80, 80, 0xFF00FFFF);
-
-    Renderer::lineRect(&_mainCanvas, 300 + 50.0*sin(tick / 10.0), 200 - 50.0*cos(tick / 10.0), 100, 100, 0xFF0000FF);
-    Renderer::lineRect(&_mainCanvas, 400 - 40 + posX, 200, 100, 100, 0xFF0000FF);
-
-    Renderer::lineRect(&_mainCanvas, rect2PosX - 25, rect2PosY - 25, 50, 50, 0xFFFFFFFF);
-    Renderer::fillRect(&_mainCanvas, rect2PosX - 5, rect2PosY - 5, 10, 10, 0xFFFFFFFF);
+    //Renderer::lineRect(&_mainCanvas, mousePosX - 25, mousePosY - 25, 50, 50, 0xFF000000);
+    //Renderer::fillRect(&_mainCanvas, mousePosX - 5, mousePosY - 5, 10, 10, 0xFF000000);
 
     memcpy(target, _mainCanvas.getData(), _screen_width*_screen_height*sizeof(u32));
 
@@ -51,7 +49,7 @@ void luna::Program::Update() {
     static bool isHolding = false;
     static i32 touchPosX = 0;
     static i32 touchPosY = 0;
-
+    
     Event event;
     while(!EventManager::pullEvent(&event)) {
         switch (event.eventType) {
@@ -79,9 +77,27 @@ void luna::Program::Update() {
         }
     }
 
+    mousePosX = touchPosX;
+    mousePosY = touchPosY;
+    
     if(isHolding) {
-        rect2PosX = touchPosX;
-        rect2PosY = touchPosY;
+        i32 mousePosXfromScreenCenter = mousePosX - (_screen_width / 2);
+        i32 mousePosYfromScreenCenter = mousePosY - (_screen_height / 2);
+        
+        i32 editorRectXPos = _screen_width / 2;
+        i32 editorRectYPos = _screen_height / 2;
+
+        i32 editorRectWidth = editor.canvas.getWidth();
+        i32 editorRectHeight = editor.canvas.getHeight();
+
+        if((abs(mousePosXfromScreenCenter) < editorRectWidth / 2) &&
+            abs(mousePosYfromScreenCenter) < editorRectHeight / 2) {
+            
+            i32 canvasPosX = mousePosXfromScreenCenter + (editorRectWidth / 2);
+            i32 canvasPosY = mousePosYfromScreenCenter + (editorRectHeight / 2);
+
+            luna::Renderer::fillCircle(&editor.canvas, canvasPosX, canvasPosY, 8, 0xFF111111);
+        }
     }
 
     auto end = std::chrono::high_resolution_clock::now();                                                                

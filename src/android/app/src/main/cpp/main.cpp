@@ -5,7 +5,7 @@
 
 #include "luna.h"
 
-luna::Program program(800, 600);
+luna::Program *program;
 
 extern "C" JNIEXPORT void JNICALL Java_com_luna_MainActivity_drawFromC(JNIEnv *env, jobject instance, jobject bmp) {
     AndroidBitmapInfo info;
@@ -17,8 +17,8 @@ extern "C" JNIEXPORT void JNICALL Java_com_luna_MainActivity_drawFromC(JNIEnv *e
 
     auto begin = std::chrono::high_resolution_clock::now();                                                                                                                                     
 
-    program.Update();
-    program.Render((u32*) pixels);
+    program->Update();
+    program->Render((u32*) pixels);
 
     auto end = std::chrono::high_resolution_clock::now();                                                                
     double durationMs = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin).count() / 1000000.0; 
@@ -31,7 +31,7 @@ extern "C" JNIEXPORT void JNICALL Java_com_luna_MainActivity_drawFromC(JNIEnv *e
 }
 
 extern "C" JNIEXPORT void JNICALL Java_com_luna_MainActivity_lunaInit(JNIEnv *env, jobject instance, int width , int height) {
-    program = luna::Program(width, height);
+    program = new luna::Program(width, height);
 }
 
 extern "C" JNIEXPORT void JNICALL Java_com_luna_MainActivity_lunaPushTouchEvent(JNIEnv *env, jobject instance, int x0 , int y0) {

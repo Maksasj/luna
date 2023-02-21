@@ -5,7 +5,9 @@ void luna::Renderer::fillCanvas(Canvas *canvas, u32 color) {
     u32 canvasWidth = canvas->getWidth();
     u32 canvasHeight = canvas->getHeight();
 
-    memset(canvasData, color, canvasWidth*canvasHeight*sizeof(u32));
+    for(int i = 0; i < canvasWidth * canvasHeight; ++i) {
+        canvasData[i] = color;
+    }
 }
 
 void luna::Renderer::fillRect(Canvas *canvas, i32 x0, i32 y0, u32 width, u32 height, u32 color) {
@@ -75,6 +77,27 @@ void luna::Renderer::fillCircle(Canvas *canvas, i32 x0, i32 y0, u32 radius, u32 
             
             if(dx*dx + dy*dy < (i32)(radius*radius))
                 canvasData[y * canvasWidth + x] = color;
+        }
+    }
+}
+
+void luna::Renderer::drawCanvas(Canvas *target, Canvas *source, i32 x0, i32 y0) {
+    u32* targetData = target->getData();
+    u32 targetWidth = target->getWidth();
+    u32 targetHeight = target->getHeight();
+
+    u32* sourceData = source->getData();
+    u32 sourceWidth = source->getWidth();
+    u32 sourceHeight = source->getHeight();
+
+    i32 x1 = x0 + sourceWidth;
+    i32 y1 = y0 + sourceHeight;
+
+    luna::Rectangle::normalize(&x0, &y0, &x1, &y1, targetWidth, targetHeight);
+
+    for(i32 y = y0; y < y1; ++y) {
+        for(i32 x = x0; x < x1; ++x) {
+            targetData[y * targetWidth + x] = sourceData[(y-y0) * sourceWidth + (x-x0)];
         }
     }
 }

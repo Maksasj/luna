@@ -20,7 +20,7 @@ namespace luna {
 }
 
 #ifdef _ENABLE_LUNA_LOGGER_
-    #define LUNA_LOG(message) Logger::Log(message)
+    #define LUNA_LOG(message) luna::Logger::Log(message)
 #else 
     #define LUNA_LOG(message)
 #endif

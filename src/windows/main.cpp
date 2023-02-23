@@ -20,13 +20,15 @@ int main(int argc, char *argv[]) {
     luna::Program *program;
     program = new luna::Program(SCREEN_WIDTH, SCREEN_HEIGHT);
 
-    while (true) {
+    bool exit_program = 1;
+    while (exit_program) {
         SDL_Event ev;
 
         while (SDL_PollEvent(&ev)) {
             switch (ev.type) {
                 case SDL_QUIT: {
-                    return 0;
+                    exit_program = 0;
+                    break;
                 }
                 case SDL_MOUSEBUTTONDOWN: {   
                     luna::Event event;
@@ -81,6 +83,8 @@ int main(int argc, char *argv[]) {
 
         SDL_RenderPresent(renderer);
     }
+
+    luna::Profiler::SumUp();
 
     delete program;
 

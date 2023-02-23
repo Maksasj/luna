@@ -10,8 +10,8 @@ include_directories(${SDL2_INCLUDE_DIRS})
 file(GLOB LUNA_SOURCE
      "*.h"
      "*.cpp"
+     
      "../shared/*.cpp"
-
      "../shared/events/*.cpp"
      "../shared/rendering/*.cpp"
      "../shared/utils/*.cpp"

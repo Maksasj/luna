@@ -25,22 +25,27 @@ luna::Program::Program(u32 width, u32 height) {
     LUNA_LOG("[INFO][PROGRAM] Initialized program\n");
 }
 
+
+#define PROFILE_RECORD(LABEL) static Profile LABEL(#LABEL); LABEL.Record();
+#define PROFILE_STOP(LABEL) LABEL.Stop();
+
 void luna::Program::Render(u32* target) {
-    auto begin = std::chrono::high_resolution_clock::now();                                                                                                                                     
-    
-    Renderer::fillCanvas(&_mainCanvas, 0xFF222222);
-    
-    Renderer::drawCanvas(&_mainCanvas, &editor.canvas, ((_screen_width) / 2)  - 200, ((_screen_height) / 2) - 200);
+    PROFILE_RECORD(RENDERING);
+        PROFILE_RECORD(CANVAS_FILLING);
+                Renderer::fillCanvas(&_mainCanvas, 0xFF222222);
+        PROFILE_STOP(CANVAS_FILLING);
 
-    //Renderer::lineRect(&_mainCanvas, mousePosX - 25, mousePosY - 25, 50, 50, 0xFF000000);
-    //Renderer::fillRect(&_mainCanvas, mousePosX - 5, mousePosY - 5, 10, 10, 0xFF000000);
+        PROFILE_RECORD(SUB_CANVAS_RENDERING);
+            Renderer::drawCanvas(&_mainCanvas, &editor.canvas, ((_screen_width) / 2)  - 200, ((_screen_height) / 2) - 200);
+        PROFILE_STOP(SUB_CANVAS_RENDERING);
 
-    memcpy(target, _mainCanvas.getData(), _screen_width*_screen_height*sizeof(u32));
+        PROFILE_RECORD(FINAL_MEMCPY);
+            memcpy(target, _mainCanvas.getData(), _screen_width*_screen_height*sizeof(u32));
+        PROFILE_STOP(FINAL_MEMCPY);
 
-    auto end = std::chrono::high_resolution_clock::now();                                                                
-    double duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin).count(); 
-    
-    LUNA_LOG("[INFO][PROGRAM] Last render frame took: " + std::to_string(duration / 1000000.0) + "ms \n");
+    PROFILE_STOP(RENDERING);
+
+    //LUNA_LOG("[INFO][PROGRAM] Last render frame took: " + std::to_string(duration / 1000000.0) + "ms \n");
 }
 
 void luna::Program::Update() {

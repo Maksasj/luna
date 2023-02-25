@@ -25,12 +25,9 @@ luna::Program::Program(u32 width, u32 height) {
     LUNA_LOG("[INFO][PROGRAM] Initialized program\n");
 }
 
-
-#define PROFILE_RECORD(LABEL) static Profile LABEL(#LABEL); LABEL.Record();
-#define PROFILE_STOP(LABEL) LABEL.Stop();
-
 void luna::Program::Render(u32* target) {
     PROFILE_RECORD(RENDERING);
+    
         PROFILE_RECORD(CANVAS_FILLING);
                 Renderer::fillCanvas(&_mainCanvas, 0xFF222222);
         PROFILE_STOP(CANVAS_FILLING);
@@ -44,17 +41,17 @@ void luna::Program::Render(u32* target) {
         PROFILE_STOP(FINAL_MEMCPY);
 
     PROFILE_STOP(RENDERING);
-
-    //LUNA_LOG("[INFO][PROGRAM] Last render frame took: " + std::to_string(duration / 1000000.0) + "ms \n");
 }
 
 void luna::Program::Update() {
+    PROFILE_RECORD(UPDATE);
     auto begin = std::chrono::high_resolution_clock::now();                                                                                                                                     
     
     static bool isHolding = false;
     static i32 touchPosX = 0;
     static i32 touchPosY = 0;
     
+    PROFILE_RECORD(EVENTS_MANAGEMENT);
     Event event;
     while(!EventManager::pullEvent(&event)) {
         switch (event.eventType) {
@@ -81,6 +78,7 @@ void luna::Program::Update() {
             }
         }
     }
+    PROFILE_STOP(EVENTS_MANAGEMENT);
 
     mousePosX = touchPosX;
     mousePosY = touchPosY;
@@ -108,5 +106,7 @@ void luna::Program::Update() {
     auto end = std::chrono::high_resolution_clock::now();                                                                
     double duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count(); 
     
+    PROFILE_STOP(UPDATE);
+
     LUNA_LOG("[INFO][PROGRAM] Last update frame took: " + std::to_string(duration) + "ms \n");
 }

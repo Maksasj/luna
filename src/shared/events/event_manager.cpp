@@ -9,10 +9,14 @@ void luna::EventManager::pushEvent(luna::Event event) {
 }
 
 bool luna::EventManager::pullEvent(luna::Event *event) {
+    PROFILE_RECORD(EVENT_PULLING);
+
     if(events.empty()) return true;
 
     (*event) = events[events.size() - 1];
     events.pop_back();
+
+    PROFILE_STOP(EVENT_PULLING);
 
     return false;
 }
